@@ -23,16 +23,49 @@ const CustomerPurchases = () => {
   } = useQuery({
     queryKey: ['transactions'],
     queryFn: async () => {
-      console.log('Fetching transactions...');
+      console.log('🔄 Fetching transactions from Supabase...');
+      const startTime = performance.now();
+      
       const {
         data,
-        error
-      } = await supabase.from('fmcg sample transaction data').select('*');
+        error,
+        count
+      } = await supabase
+        .from('fmcg sample transaction data')
+        .select('*', { count: 'exact' })
+        .order('Transaction ID', { ascending: true });
+      
+      const endTime = performance.now();
+      
       if (error) {
-        console.error('Error fetching transactions:', error);
+        console.error('❌ Error fetching transactions:', error);
+        console.error('Error details:', { message: error.message, hint: error.hint, code: error.code });
         throw error;
       }
-      console.log('Fetched transactions:', data?.length);
+      
+      // Enhanced logging for data integrity
+      console.log('✅ Successfully fetched transactions');
+      console.log(`📊 Data Stats:`, {
+        totalRecords: count,
+        fetchedRecords: data?.length || 0,
+        fetchTime: `${(endTime - startTime).toFixed(2)}ms`,
+        firstRecord: data?.[0],
+        lastRecord: data?.[data?.length - 1]
+      });
+      
+      // Validate data structure
+      if (data && data.length > 0) {
+        const sampleRecord = data[0];
+        const expectedFields = ['Transaction ID', 'Customer ID', 'Product Name', 'Brand', 'Category', 'Purchase Type', 'Date', 'Transaction Cost', 'Unit Pack Size'];
+        const missingFields = expectedFields.filter(field => !(field in sampleRecord));
+        
+        if (missingFields.length > 0) {
+          console.warn('⚠️ Missing expected fields in data:', missingFields);
+        }
+        
+        console.log('📋 Sample record structure:', Object.keys(sampleRecord));
+      }
+      
       return data as Transaction[];
     }
   });
