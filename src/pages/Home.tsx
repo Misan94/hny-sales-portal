@@ -20,7 +20,7 @@ const Home = () => {
         <div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Overview</h2>
           <p className="text-sm sm:text-base text-muted-foreground">
-            Welcome to your FMCG analytics platform
+            Welcome to the sales portal
           </p>
         </div>
         
@@ -38,7 +38,7 @@ const Home = () => {
         <div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Overview</h2>
           <p className="text-sm sm:text-base text-muted-foreground">
-            Welcome to your FMCG analytics platform
+            Welcome to the sales portal
           </p>
         </div>
         
@@ -57,7 +57,7 @@ const Home = () => {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Overview</h2>
         <p className="text-sm sm:text-base text-muted-foreground">
-          Welcome to your FMCG analytics platform. Here's what's happening across all sections.
+          Welcome to the sales portal. Here's what's happening across all sections.
         </p>
       </div>
       
