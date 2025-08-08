@@ -24,13 +24,6 @@ export function DemandKPIs({ data }: DemandKPIsProps) {
       trend: '+8%'
     },
     {
-      title: 'Unique Products',
-      value: data.uniqueProducts.toLocaleString(),
-      description: 'Products in portfolio',
-      icon: Package,
-      trend: '+3%'
-    },
-    {
       title: 'Avg Order Value',
       value: formatNaira(data.avgOrderValue),
       description: 'Per transaction',
@@ -40,7 +33,7 @@ export function DemandKPIs({ data }: DemandKPIsProps) {
   ];
 
   return (
-    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {kpis.map((kpi, index) => (
         <Card key={index} className="glass-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

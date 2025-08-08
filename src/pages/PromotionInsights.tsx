@@ -5,12 +5,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { TrendingUp, Target, Users, ShoppingCart, BarChart3, Percent } from 'lucide-react';
+import { useProductData, getPriceElasticityFromProducts, getCrossSellMatrixFromProducts } from '@/hooks/useProductData';
 
 export default function PromotionInsights() {
+  const { data: products, isLoading: productsLoading } = useProductData();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: subDays(new Date(), 30),
     to: new Date(),
   });
+
+  // Get real product data for elasticity and cross-sell
+  const priceElasticity = products ? getPriceElasticityFromProducts(products) : [];
+  const crossSellMatrix = products ? getCrossSellMatrixFromProducts(products) : [];
 
   // Mock data for demonstration
   const promotionData = {
@@ -20,28 +26,20 @@ export default function PromotionInsights() {
       { promo: 'Back to School Bundle', roi: 210, baseline: 90, lift: 120, repeatRate: 42, status: 'Active' },
       { promo: 'Bulk Purchase Discount', roi: 95, baseline: 110, lift: -15, repeatRate: 18, status: 'Underperforming' },
     ],
-    priceElasticity: [
-      { sku: 'COCA-500ML', currentPrice: 250, optimalPrice: 280, elasticity: -1.2, demandChange: '+15%' },
-      { sku: 'INDOMIE-70G', currentPrice: 120, optimalPrice: 110, elasticity: -2.1, demandChange: '-8%' },
-      { sku: 'PEAK-400G', currentPrice: 800, optimalPrice: 850, elasticity: -0.8, demandChange: '+12%' },
-    ],
+    priceElasticity,
     consumerSegments: [
       { segment: 'Young Families', ageRange: '25-35', frequency: 'High', basketValue: '₦3,200', preferredCategories: ['Beverages', 'Snacks', 'Baby Care'] },
       { segment: 'Students', ageRange: '18-25', frequency: 'Medium', basketValue: '₦1,800', preferredCategories: ['Instant Foods', 'Beverages'] },
       { segment: 'Working Professionals', ageRange: '30-45', frequency: 'Medium', basketValue: '₦4,500', preferredCategories: ['Health Foods', 'Premium Beverages'] },
     ],
-    crossSellMatrix: [
-      { primaryProduct: 'COCA-500ML', recommendedProduct: 'PRINGLES-165G', coIndex: 0.78, uplift: '+32%' },
-      { primaryProduct: 'INDOMIE-70G', recommendedProduct: 'MAGGI-CUBE', coIndex: 0.65, uplift: '+28%' },
-      { primaryProduct: 'PEAK-400G', recommendedProduct: 'GOLDEN-MORN', coIndex: 0.71, uplift: '+25%' },
-    ]
+    crossSellMatrix
   };
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Promotion & Shopper Insights</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Promotion Insights</h1>
           <p className="text-muted-foreground">ROI analysis, price optimization, and consumer behavior insights</p>
         </div>
         <DateRangePicker
@@ -134,7 +132,7 @@ export default function PromotionInsights() {
         </CardContent>
       </Card>
 
-      {/* Price Elasticity & Consumer Segments */}
+      {/* Price Elasticity & Cross-sell Matrix */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
@@ -163,26 +161,27 @@ export default function PromotionInsights() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Consumer Segments</CardTitle>
-            <CardDescription>Inferred demographics and shopping behavior</CardDescription>
+            <CardTitle>Cross-sell Opportunity Matrix</CardTitle>
+            <CardDescription>High-affinity product bundles for increased ticket sizes</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {promotionData.consumerSegments.map((segment, index) => (
-                <div key={index} className="p-3 border rounded">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="font-medium">{segment.segment}</div>
-                    <div className="text-sm font-medium">{segment.basketValue}</div>
+              {promotionData.crossSellMatrix.map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-3 border rounded">
+                  <div className="flex-1">
+                    <div className="font-medium">{item.primaryProduct}</div>
+                    <div className="text-sm text-muted-foreground">
+                      Pair with: {item.recommendedProduct}
+                    </div>
                   </div>
-                  <div className="text-sm text-muted-foreground mb-2">
-                    Age: {segment.ageRange} • Frequency: {segment.frequency}
-                  </div>
-                  <div className="flex flex-wrap gap-1">
-                    {segment.preferredCategories.map((category, catIndex) => (
-                      <Badge key={catIndex} variant="outline" className="text-xs">
-                        {category}
-                      </Badge>
-                    ))}
+                  <div className="flex items-center space-x-3">
+                    <div className="text-right">
+                      <div className="font-medium text-blue-600">{item.uplift}</div>
+                      <div className="text-sm text-muted-foreground">Revenue uplift</div>
+                    </div>
+                    <Badge variant="secondary">
+                      {(item.coIndex * 100).toFixed(0)}% Affinity
+                    </Badge>
                   </div>
                 </div>
               ))}
@@ -190,60 +189,6 @@ export default function PromotionInsights() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Cross-sell Opportunity Matrix */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Cross-sell Opportunity Matrix</CardTitle>
-          <CardDescription>High-affinity product bundles for increased ticket sizes</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {promotionData.crossSellMatrix.map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex-1">
-                  <div className="font-medium">{item.primaryProduct}</div>
-                  <div className="text-sm text-muted-foreground">
-                    Pair with: {item.recommendedProduct}
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-right">
-                    <div className="font-medium text-blue-600">{item.uplift}</div>
-                    <div className="text-sm text-muted-foreground">Revenue uplift</div>
-                  </div>
-                  <Badge variant="secondary">
-                    {(item.coIndex * 100).toFixed(0)}% Affinity
-                  </Badge>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Why it matters section */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Why Promotion & Shopper Insights Matter</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-medium text-blue-900">Optimize Discounts</h4>
-              <p className="text-sm text-blue-700 mt-1">Know which promos are worth repeating and how deep to discount</p>
-            </div>
-            <div className="p-4 bg-green-50 rounded-lg">
-              <h4 className="font-medium text-green-900">Tailor Trade Deals</h4>
-              <p className="text-sm text-green-700 mt-1">Match promotions to shopper profiles in each territory</p>
-            </div>
-            <div className="p-4 bg-purple-50 rounded-lg">
-              <h4 className="font-medium text-purple-900">Increase Basket Size</h4>
-              <p className="text-sm text-purple-700 mt-1">Push high-affinity bundles for higher ticket sizes</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

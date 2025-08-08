@@ -1,5 +1,5 @@
 
-import { Home, Users, ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Activity, User, LogOut, Target, Truck, Map } from "lucide-react"
+import { Home, Users, ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Activity, User, LogOut, Target, Map } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -28,7 +28,6 @@ const activityNavigation = [
 
 const insightsNavigation = [
   { title: "Purchase Analysis", url: "/demand-analytics", icon: Activity },
-  { title: "Demand Pulse", url: "/demand-pulse", icon: TrendingUp },
   { title: "Churn Analysis", url: "/churn-analysis", icon: AlertTriangle },
   { title: "Segments", url: "/segments", icon: BarChart3 },
   { title: "Promotion Insights", url: "/promotion-insights", icon: Target },
@@ -36,12 +35,10 @@ const insightsNavigation = [
 
 const forecastsNavigation = [
   { title: "Predictive Analysis", url: "/predictive-analysis", icon: TrendingUp },
-  { title: "Smart Reorder Center", url: "/smart-reorder", icon: Package },
 ]
 
 const planNavigation = [
-  { title: "Service Tracker", url: "/service-tracker", icon: Truck },
-  { title: "Growth Maps", url: "/growth-maps", icon: Map },
+  { title: "Growth Opportunities", url: "/growth-maps", icon: Map },
 ]
 
 export function AppSidebar() {

@@ -10,11 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Search, TrendingUp, Users, Package, Target } from 'lucide-react';
 import { CustomerRecommendation, ProductRecommendation, TransitionMatrix, RecommendationAnalytics, PredictionAnalytics, ProductPrediction, CustomerPrediction, DemographicAnalytics, DemographicPrediction } from '@/types/recommendation';
-import { RecommendationEngine } from '@/components/recommendations/RecommendationEngine';
-import { TransitionHeatmap } from '@/components/recommendations/TransitionHeatmap';
-import { CategoryFlow } from '@/components/recommendations/CategoryFlow';
-import { ProductPredictions } from '@/components/recommendations/ProductPredictions';
-import { DemographicProductPredictions } from '@/components/recommendations/DemographicProductPredictions';
+import { PredictiveMetrics } from '@/components/recommendations/PredictiveMetrics';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 
 interface TransactionData {
@@ -123,39 +119,13 @@ export default function ProductRecommendations() {
         />
       </div>
 
-      {!analyticsLoading && analytics && <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Transitions</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{analytics.topTransitions.length}</div>
-              <p className="text-xs text-muted-foreground">Product-to-product patterns</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Category Affinities</CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{analytics.categoryAffinities.length}</div>
-              <p className="text-xs text-muted-foreground">Cross-category patterns</p>
-            </CardContent>
-          </Card>
-        </div>}
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ProductPredictions analytics={predictionAnalytics} isLoading={predictionsLoading} />
-        <DemographicProductPredictions analytics={demographicAnalytics} isLoading={demographicLoading} />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <TransitionHeatmap analytics={analytics} isLoading={analyticsLoading} />
-        <CategoryFlow analytics={analytics} isLoading={analyticsLoading} />
-      </div>
+      {/* Demographic-Focused Predictive Analytics */}
+      <PredictiveMetrics 
+        predictionAnalytics={predictionAnalytics}
+        demographicAnalytics={demographicAnalytics}
+        recommendationAnalytics={analytics}
+        isLoading={predictionsLoading || demographicLoading || analyticsLoading}
+      />
     </div>;
 }
 

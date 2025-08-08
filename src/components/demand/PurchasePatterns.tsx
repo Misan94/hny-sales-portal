@@ -64,21 +64,6 @@ export function PurchasePatterns({ data }: PurchasePatternsProps) {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        
-        <div className="mt-4 grid grid-cols-2 gap-4">
-          <div className="text-center p-3 rounded-lg bg-primary/5">
-            <div className="text-lg font-semibold text-primary">
-              {(data.reduce((sum, d) => sum + d.volume, 0) / data.length).toFixed(0)}
-            </div>
-            <div className="text-xs text-muted-foreground">Avg Monthly Volume</div>
-          </div>
-          <div className="text-center p-3 rounded-lg bg-secondary/5">
-            <div className="text-lg font-semibold text-secondary">
-              {formatNaira(data.reduce((sum, d) => sum + d.avgOrderValue, 0) / data.length)}
-            </div>
-            <div className="text-xs text-muted-foreground">Avg Order Value</div>
-          </div>
-        </div>
       </CardContent>
     </Card>
   );

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import { subDays } from 'date-fns';
 import { useDemandAnalytics } from '@/hooks/useDemandAnalytics';
-import { DemandVelocity } from '@/components/demand/DemandVelocity';
+import { AgeGenderScatterPlot } from '@/components/demand/AgeGenderScatterPlot';
 import { CategoryPerformance } from '@/components/demand/CategoryPerformance';
 import { GeographicDemand } from '@/components/demand/GeographicDemand';
 import { PackSizeDemand } from '@/components/demand/PackSizeDemand';
@@ -72,13 +72,13 @@ export default function ProductDemandAnalytics() {
       <PurchasePatterns data={demandData.purchasePatterns} />
 
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-        <DemandVelocity data={demandData.demandVelocity} />
+        <PackSizeDemand data={demandData.packSizeAnalysis} />
         <CategoryPerformance data={demandData.categoryPerformance} />
       </div>
 
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
         <GeographicDemand data={demandData.geographicDemand} />
-        <PackSizeDemand data={demandData.packSizeAnalysis} />
+        <AgeGenderScatterPlot data={demandData} />
       </div>
     </div>
   );

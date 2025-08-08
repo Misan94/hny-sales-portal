@@ -43,7 +43,7 @@ export default function GrowthMaps() {
     <div className="space-y-6">
       <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Market Growth Maps</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Growth Opportunities</h1>
           <p className="text-muted-foreground">Territory expansion analysis and market opportunity mapping</p>
         </div>
         <DateRangePicker
@@ -100,42 +100,94 @@ export default function GrowthMaps() {
         </Card>
       </div>
 
-      {/* White Space Heat Map */}
-      <Card>
-        <CardHeader>
-          <CardTitle>White Space Heat Map</CardTitle>
-          <CardDescription>Consumer hotspots with no active wholesaler coverage</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {growthData.whiteSpaceAreas.map((area, index) => (
-              <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex-1">
-                  <div className="font-medium">{area.area}</div>
-                  <div className="text-sm text-muted-foreground">
-                    Population: {area.population.toLocaleString()} • Active Wholesalers: {area.activeWholesalers}
+      {/* Main Content Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* White Space Heat Map - Left Side (2/3 width) */}
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>White Space Heat Map</CardTitle>
+              <CardDescription>Consumer hotspots with no active wholesaler coverage</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {growthData.whiteSpaceAreas.map((area, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex-1">
+                      <div className="font-medium">{area.area}</div>
+                      <div className="text-sm text-muted-foreground">
+                        Population: {area.population.toLocaleString()} • Active Wholesalers: {area.activeWholesalers}
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <div className="text-right">
+                        <div className="font-medium">{area.estimatedValue}</div>
+                        <div className="text-sm text-muted-foreground">Est. monthly value</div>
+                      </div>
+                      <Badge 
+                        variant={
+                          area.priority === 'Critical' ? 'destructive' : 
+                          area.priority === 'High' ? 'default' : 
+                          area.priority === 'Medium' ? 'secondary' : 'outline'
+                        }
+                      >
+                        {area.priority} Priority
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Market Growth Insights - Right Side (1/3 width) */}
+        <div className="lg:col-span-1">
+          <Card>
+            <CardHeader>
+              <CardTitle>Market Growth Insights</CardTitle>
+              <CardDescription>Strategic recommendations for territory expansion</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <h4 className="font-medium flex items-center">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    High-Priority Areas
+                  </h4>
+                  <div className="space-y-2">
+                    <div className="p-3 bg-red-50 rounded">
+                      <div className="font-medium text-red-900">Lekki Phase 2</div>
+                      <div className="text-sm text-red-700">45K population, zero coverage, ₦2.8M potential</div>
+                    </div>
+                    <div className="p-3 bg-orange-50 rounded">
+                      <div className="font-medium text-orange-900">Ajah New Town</div>
+                      <div className="text-sm text-orange-700">32K population, limited coverage, ₦1.9M potential</div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-right">
-                    <div className="font-medium">{area.estimatedValue}</div>
-                    <div className="text-sm text-muted-foreground">Est. monthly value</div>
+
+                <div className="space-y-4">
+                  <h4 className="font-medium flex items-center">
+                    <Target className="h-4 w-4 mr-2" />
+                    Quick Wins
+                  </h4>
+                  <div className="space-y-2">
+                    <div className="p-3 bg-green-50 rounded">
+                      <div className="font-medium text-green-900">Territory Split - Lagos Mainland</div>
+                      <div className="text-sm text-green-700">₦8M investment, 12-month payback, 180% ROI</div>
+                    </div>
+                    <div className="p-3 bg-blue-50 rounded">
+                      <div className="font-medium text-blue-900">Ikeja GRA Expansion</div>
+                      <div className="text-sm text-blue-700">43% share of wallet, high growth potential</div>
+                    </div>
                   </div>
-                  <Badge 
-                    variant={
-                      area.priority === 'Critical' ? 'destructive' : 
-                      area.priority === 'High' ? 'default' : 
-                      area.priority === 'Medium' ? 'secondary' : 'outline'
-                    }
-                  >
-                    {area.priority} Priority
-                  </Badge>
                 </div>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
 
       {/* Coverage Analysis & Share of Wallet */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -242,73 +294,7 @@ export default function GrowthMaps() {
         </CardContent>
       </Card>
 
-      {/* Market Insights Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Market Growth Insights</CardTitle>
-          <CardDescription>Strategic recommendations for territory expansion</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h4 className="font-medium flex items-center">
-                <MapPin className="h-4 w-4 mr-2" />
-                High-Priority Areas
-              </h4>
-              <div className="space-y-2">
-                <div className="p-3 bg-red-50 rounded">
-                  <div className="font-medium text-red-900">Lekki Phase 2</div>
-                  <div className="text-sm text-red-700">45K population, zero coverage, ₦2.8M potential</div>
-                </div>
-                <div className="p-3 bg-orange-50 rounded">
-                  <div className="font-medium text-orange-900">Ajah New Town</div>
-                  <div className="text-sm text-orange-700">32K population, limited coverage, ₦1.9M potential</div>
-                </div>
-              </div>
-            </div>
 
-            <div className="space-y-4">
-              <h4 className="font-medium flex items-center">
-                <Target className="h-4 w-4 mr-2" />
-                Quick Wins
-              </h4>
-              <div className="space-y-2">
-                <div className="p-3 bg-green-50 rounded">
-                  <div className="font-medium text-green-900">Territory Split - Lagos Mainland</div>
-                  <div className="text-sm text-green-700">₦8M investment, 12-month payback, 180% ROI</div>
-                </div>
-                <div className="p-3 bg-blue-50 rounded">
-                  <div className="font-medium text-blue-900">Ikeja GRA Expansion</div>
-                  <div className="text-sm text-blue-700">43% share of wallet, high growth potential</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Why it matters section */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Why Market Growth Maps Matter</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-medium text-blue-900">Guide Expansion</h4>
-              <p className="text-sm text-blue-700 mt-1">Make data-driven decisions on territory expansion and avoid channel conflict</p>
-            </div>
-            <div className="p-4 bg-green-50 rounded-lg">
-              <h4 className="font-medium text-green-900">Justify Investments</h4>
-              <p className="text-sm text-green-700 mt-1">Help wholesalers validate opening new depots or adding sub-distributors</p>
-            </div>
-            <div className="p-4 bg-purple-50 rounded-lg">
-              <h4 className="font-medium text-purple-900">Set Volume Targets</h4>
-              <p className="text-sm text-purple-700 mt-1">Tie volume-based rebates to actual market headroom for growth</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

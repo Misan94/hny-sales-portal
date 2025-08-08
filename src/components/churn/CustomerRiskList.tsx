@@ -56,76 +56,79 @@ export function CustomerRiskList({ customers, isLoading }: CustomerRiskListProps
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3 sm:space-y-4">
-        {paginatedCustomers.map((customer) => (
-          <Card key={customer.customerId} className="p-3 sm:p-4">
-            <CardContent className="p-0 space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                  <h3 className="font-semibold text-sm sm:text-base">{customer.customerName}</h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground">ID: {customer.customerId}</p>
-                </div>
-                <div className="flex items-center gap-3 sm:text-right">
-                  <div className={`text-xl sm:text-2xl font-bold ${getRiskTextColor(customer.riskLevel)}`}>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b">
+              <th className="text-left p-3 font-medium">Customer</th>
+              <th className="text-center p-3 font-medium">Churn Score</th>
+              <th className="text-center p-3 font-medium">Risk Level</th>
+              <th className="text-right p-3 font-medium">Last Purchase</th>
+              <th className="text-right p-3 font-medium">Purchases</th>
+              <th className="text-right p-3 font-medium">Total Spent</th>
+              <th className="text-center p-3 font-medium">RFM Scores</th>
+              <th className="text-left p-3 font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedCustomers.map((customer) => (
+              <tr key={customer.customerId} className="border-b hover:bg-muted/50">
+                <td className="p-3">
+                  <div>
+                    <div className="font-medium">{customer.customerName}</div>
+                    <div className="text-xs text-muted-foreground">ID: {customer.customerId}</div>
+                  </div>
+                </td>
+                <td className="p-3 text-center">
+                  <div className={`text-lg font-bold ${getRiskTextColor(customer.riskLevel)}`}>
                     {customer.churnScore}
                   </div>
+                </td>
+                <td className="p-3 text-center">
                   <Badge variant={getRiskColor(customer.riskLevel)} className="text-xs">
-                    {customer.riskLevel} Risk
+                    {customer.riskLevel}
                   </Badge>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
-                <div>
-                  <span className="text-muted-foreground">Last Purchase:</span>
+                </td>
+                <td className="p-3 text-right">
                   <div className="font-medium">{customer.daysSinceLastPurchase} days ago</div>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Total Purchases:</span>
+                </td>
+                <td className="p-3 text-right">
                   <div className="font-medium">{customer.totalPurchases}</div>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Total Spent:</span>
+                </td>
+                <td className="p-3 text-right">
                   <div className="font-medium">₦{customer.totalSpent.toLocaleString()}</div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
-                <div>
-                  <span className="text-muted-foreground">Recency Score:</span>
-                  <div className={`font-medium ${customer.recencyScore <= 2 ? 'text-red-600' : 'text-green-600'}`}>
-                    {customer.recencyScore}/5
+                </td>
+                <td className="p-3 text-center">
+                  <div className="flex justify-center gap-1">
+                    <span className={`px-1 py-0.5 rounded text-xs ${customer.recencyScore <= 2 ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                      R:{customer.recencyScore}
+                    </span>
+                    <span className={`px-1 py-0.5 rounded text-xs ${customer.frequencyScore <= 2 ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                      F:{customer.frequencyScore}
+                    </span>
+                    <span className={`px-1 py-0.5 rounded text-xs ${customer.monetaryScore <= 2 ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                      M:{customer.monetaryScore}
+                    </span>
                   </div>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Frequency Score:</span>
-                  <div className={`font-medium ${customer.frequencyScore <= 2 ? 'text-red-600' : 'text-green-600'}`}>
-                    {customer.frequencyScore}/5
-                  </div>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Monetary Score:</span>
-                  <div className={`font-medium ${customer.monetaryScore <= 2 ? 'text-red-600' : 'text-green-600'}`}>
-                    {customer.monetaryScore}/5
-                  </div>
-                </div>
-              </div>
-
-              {customer.interventionRecommendations.length > 0 && (
-                <div>
-                  <span className="text-xs sm:text-sm text-muted-foreground">Recommended Actions:</span>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {customer.interventionRecommendations.map((recommendation, index) => (
+                </td>
+                <td className="p-3">
+                  <div className="flex flex-wrap gap-1">
+                    {customer.interventionRecommendations.slice(0, 2).map((recommendation, index) => (
                       <Badge key={index} variant="outline" className="text-xs">
-                        {recommendation}
+                        {recommendation.length > 15 ? recommendation.substring(0, 15) + '...' : recommendation}
                       </Badge>
                     ))}
+                    {customer.interventionRecommendations.length > 2 && (
+                      <Badge variant="outline" className="text-xs">
+                        +{customer.interventionRecommendations.length - 2} more
+                      </Badge>
+                    )}
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <CustomerPagination

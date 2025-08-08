@@ -4,9 +4,11 @@ import { subDays } from 'date-fns';
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { SegmentOverview } from "@/components/segmentation/SegmentOverview";
-import { RFMDistribution } from "@/components/segmentation/RFMDistribution";
-import { PackSizeAnalysis } from "@/components/segmentation/PackSizeAnalysis";
+import { SegmentAnalytics } from "@/components/segmentation/SegmentAnalytics";
+
+import { RecencyDistribution } from "@/components/segmentation/RecencyDistribution";
+import { FrequencyDistribution } from "@/components/segmentation/FrequencyDistribution";
+import { MonetaryDistribution } from "@/components/segmentation/MonetaryDistribution";
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 
 import { CustomerSegment, RFMData } from "@/types/segmentation";
@@ -164,12 +166,17 @@ const CustomerSegmentation = () => {
         />
       </div>
 
-      <SegmentOverview segments={segments} />
+      {/* Key Segment Metrics */}
+      <SegmentAnalytics data={rfmData} />
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <RFMDistribution data={rfmData} />
-        <PackSizeAnalysis data={rfmData} />
-      </div>
+      
+
+              {/* Individual RFM Distribution Cards */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <RecencyDistribution data={rfmData} />
+                <FrequencyDistribution data={rfmData} />
+                <MonetaryDistribution data={rfmData} />
+              </div>
 
       
     </div>;

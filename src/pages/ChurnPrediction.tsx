@@ -8,8 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { AlertTriangle, Users, TrendingDown, DollarSign } from 'lucide-react';
 import { CustomerChurnData, ChurnAnalytics, ChurnRiskLevel } from '@/types/churn';
 import { ChurnOverview } from '@/components/churn/ChurnOverview';
-import { ChurnRiskDistribution } from '@/components/churn/ChurnRiskDistribution';
 import { CustomerRiskList } from '@/components/churn/CustomerRiskList';
+import { PredictiveAnalytics } from '@/components/churn/PredictiveAnalytics';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 
 interface TransactionData {
@@ -144,13 +144,17 @@ export default function ChurnPrediction() {
             </Card>
           </div>
 
-          {/* Risk Distribution and Overview */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ChurnRiskDistribution analytics={churnAnalytics} isLoading={analyticsLoading} />
-            <ChurnOverview analytics={churnAnalytics} isLoading={analyticsLoading} />
-          </div>
+          {/* Churn Risk Overview */}
+          <ChurnOverview analytics={churnAnalytics} isLoading={analyticsLoading} />
 
-          {/* Customer Risk List with Pagination */}
+          {/* Key Risk Factors and Early Warning Signals */}
+          <PredictiveAnalytics 
+            analytics={churnAnalytics} 
+            customers={churnAnalytics.customersAtRisk} 
+            isLoading={analyticsLoading} 
+          />
+
+          {/* Customer Risk Analysis */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">

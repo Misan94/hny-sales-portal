@@ -4,9 +4,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { QuickStats } from '@/components/dashboard/QuickStats';
-import { SectionPreview } from '@/components/dashboard/SectionPreview';
-import { RecentActivity } from '@/components/dashboard/RecentActivity';
-import { TopProducts } from '@/components/dashboard/TopProducts';
+import { ChurnAnalysisPreview } from '@/components/dashboard/ChurnAnalysisPreview';
+import { PurchaseAnalysisPreview } from '@/components/dashboard/PurchaseAnalysisPreview';
+import { GrowthMapsPreview } from '@/components/dashboard/GrowthMapsPreview';
 import { useDashboardData } from '@/hooks/useDashboardData';
 const Home = () => {
   const {
@@ -80,10 +80,22 @@ const Home = () => {
       {/* Quick Stats */}
       <QuickStats metrics={metrics} />
 
-      {/* Additional Insights */}
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
-        <TopProducts metrics={metrics} />
-        <RecentActivity metrics={metrics} />
+      {/* Purchase Analysis Preview */}
+      <div>
+        <h3 className="text-lg sm:text-xl font-semibold mb-4">Purchase Analysis Overview</h3>
+        <PurchaseAnalysisPreview metrics={metrics} />
+      </div>
+
+      {/* Churn Analysis Preview */}
+      <div>
+        <h3 className="text-lg sm:text-xl font-semibold mb-4">Churn Analysis Overview</h3>
+        <ChurnAnalysisPreview metrics={metrics} />
+      </div>
+
+      {/* Growth Maps Preview */}
+      <div>
+        <h3 className="text-lg sm:text-xl font-semibold mb-4">Market Growth Opportunities</h3>
+        <GrowthMapsPreview metrics={metrics} />
       </div>
     </div>;
 };
