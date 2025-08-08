@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { CustomerSegment } from "@/types/segmentation";
 interface SegmentOverviewProps {
   segments: CustomerSegment[];
@@ -17,18 +17,29 @@ export const SegmentOverview = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-80">
+          <div className="h-96">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={segments} cx="50%" cy="50%" labelLine={false} label={({
-                name,
-                percentage
-              }) => `${name}: ${percentage.toFixed(1)}%`} outerRadius={80} fill="#8884d8" dataKey="count">
-                  {segments.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                </Pie>
-                <Tooltip formatter={value => [value, "Customers"]} />
+              <BarChart data={segments} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis 
+                  dataKey="name" 
+                  angle={-45} 
+                  textAnchor="end" 
+                  height={100}
+                  interval={0}
+                />
+                <YAxis />
+                <Tooltip 
+                  formatter={(value) => [value, "Customers"]}
+                  labelFormatter={(label) => `Segment: ${label}`}
+                />
                 <Legend />
-              </PieChart>
+                <Bar dataKey="count" fill="#8884d8">
+                  {segments.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </CardContent>

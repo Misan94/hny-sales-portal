@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { SegmentOverview } from "@/components/segmentation/SegmentOverview";
 import { RFMDistribution } from "@/components/segmentation/RFMDistribution";
 import { PackSizeAnalysis } from "@/components/segmentation/PackSizeAnalysis";
-import { SegmentDetails } from "@/components/segmentation/SegmentDetails";
+
 import { CustomerSegment, RFMData } from "@/types/segmentation";
 const CustomerSegmentation = () => {
   const [segments, setSegments] = useState<CustomerSegment[]>([]);
@@ -157,7 +157,7 @@ const CustomerSegmentation = () => {
         <PackSizeAnalysis data={rfmData} />
       </div>
 
-      <SegmentDetails segments={segments} rfmData={rfmData} />
+      
     </div>;
 };
 export default CustomerSegmentation;
