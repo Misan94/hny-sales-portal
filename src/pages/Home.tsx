@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Users, TrendingUp, Database, ShoppingCart, Package, BarChart3, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from '@/components/ui/skeleton';
@@ -7,6 +8,8 @@ import { QuickStats } from '@/components/dashboard/QuickStats';
 import { ChurnAnalysisPreview } from '@/components/dashboard/ChurnAnalysisPreview';
 import { PurchaseAnalysisPreview } from '@/components/dashboard/PurchaseAnalysisPreview';
 import { GrowthMapsPreview } from '@/components/dashboard/GrowthMapsPreview';
+import { PredictiveAnalysisModal } from '@/components/modals/PredictiveAnalysisModal';
+import { ChurnAnalysisModal } from '@/components/modals/ChurnAnalysisModal';
 import { useDashboardData } from '@/hooks/useDashboardData';
 const Home = () => {
   const {
@@ -15,6 +18,10 @@ const Home = () => {
     error
   } = useDashboardData();
   const navigate = useNavigate();
+  
+  // Modal state management
+  const [isPredictiveModalOpen, setIsPredictiveModalOpen] = useState(false);
+  const [isChurnModalOpen, setIsChurnModalOpen] = useState(false);
   if (loading) {
     return <div className="space-y-6 sm:space-y-8">
         <div>
@@ -66,11 +73,11 @@ const Home = () => {
         <h3 className="text-lg sm:text-xl font-semibold mb-3">Quick Actions</h3>
         
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button size="lg" className="flex-1 sm:flex-none" onClick={() => navigate('/predictive-analysis')}>
+          <Button size="lg" className="flex-1 sm:flex-none" onClick={() => setIsPredictiveModalOpen(true)}>
             <TrendingUp className="mr-2 h-4 w-4" />
             Run Predictive Analysis
           </Button>
-          <Button size="lg" variant="outline" className="flex-1 sm:flex-none" onClick={() => navigate('/churn-analysis')}>
+          <Button size="lg" variant="outline" className="flex-1 sm:flex-none" onClick={() => setIsChurnModalOpen(true)}>
             <AlertTriangle className="mr-2 h-4 w-4" />
             Run Churn Analysis
           </Button>
@@ -97,6 +104,16 @@ const Home = () => {
         <h3 className="text-lg sm:text-xl font-semibold mb-4">Market Growth Opportunities</h3>
         <GrowthMapsPreview metrics={metrics} />
       </div>
+
+      {/* Modals */}
+      <PredictiveAnalysisModal 
+        isOpen={isPredictiveModalOpen} 
+        onClose={() => setIsPredictiveModalOpen(false)} 
+      />
+      <ChurnAnalysisModal 
+        isOpen={isChurnModalOpen} 
+        onClose={() => setIsChurnModalOpen(false)} 
+      />
     </div>;
 };
 export default Home;
