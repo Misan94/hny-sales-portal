@@ -24,8 +24,18 @@ export function PurchaseAnalysisPreview({ metrics }: PurchaseAnalysisPreviewProp
     { month: 'Jun', transactions: 3150, revenue: 17800000, avgOrder: 5651 },
   ];
 
-  // Get real category performance from products data
-  const categoryPerformance = products ? getCategoryPerformanceFromProducts(products) : [];
+  // Get real category performance from products data with fallback
+  const realCategoryPerformance = products ? getCategoryPerformanceFromProducts(products) : [];
+  
+  // Fallback mock data for category performance if no real data
+  const mockCategoryPerformance = [
+    { category: 'Ball Foods', share: 57, revenue: 8230000, growth: 10, count: 45 },
+    { category: 'Pasta', share: 21, revenue: 4984000, growth: 7, count: 38 },
+    { category: 'Noodles', share: 21, revenue: 3204000, growth: 17, count: 24 },
+    { category: 'Others', share: 1, revenue: 136000, growth: 5, count: 8 }
+  ];
+  
+  const categoryPerformance = realCategoryPerformance.length > 0 ? realCategoryPerformance : mockCategoryPerformance;
 
   const totalRevenue = purchaseTrends[purchaseTrends.length - 1]?.revenue || 0;
   const totalTransactions = purchaseTrends[purchaseTrends.length - 1]?.transactions || 0;
@@ -197,7 +207,7 @@ export function PurchaseAnalysisPreview({ metrics }: PurchaseAnalysisPreviewProp
                 <DollarSign className="h-4 w-4 text-blue-600" />
                 <span className="text-sm font-medium">Top 3 Categories</span>
               </div>
-              <span className="text-sm text-blue-700">81% of total revenue</span>
+              <span className="text-sm text-blue-700">99% of total revenue</span>
             </div>
           </div>
         </CardContent>
