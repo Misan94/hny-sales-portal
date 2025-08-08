@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
+import { DateRange } from 'react-day-picker';
+import { subDays } from 'date-fns';
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { SegmentOverview } from "@/components/segmentation/SegmentOverview";
 import { RFMDistribution } from "@/components/segmentation/RFMDistribution";
 import { PackSizeAnalysis } from "@/components/segmentation/PackSizeAnalysis";
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 
 import { CustomerSegment, RFMData } from "@/types/segmentation";
 const CustomerSegmentation = () => {
   const [segments, setSegments] = useState<CustomerSegment[]>([]);
   const [rfmData, setRfmData] = useState<RFMData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 90),
+    to: new Date(),
+  });
   const {
     toast
   } = useToast();
@@ -145,9 +152,16 @@ const CustomerSegmentation = () => {
       </div>;
   }
   return <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Segments</h1>
-        <p className="text-muted-foreground">Customer segmentation based on Recency, Frequency, Monetary Value analysis</p>
+      <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+        <div>
+          <h1 className="text-3xl font-bold">Segments</h1>
+          <p className="text-muted-foreground">Customer segmentation based on Recency, Frequency, Monetary Value analysis</p>
+        </div>
+        <DateRangePicker
+          date={dateRange}
+          onDateChange={setDateRange}
+          placeholder="Select analysis period"
+        />
       </div>
 
       <SegmentOverview segments={segments} />

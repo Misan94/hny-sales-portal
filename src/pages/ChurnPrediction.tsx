@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { DateRange } from 'react-day-picker';
+import { subDays } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,7 +10,8 @@ import { CustomerChurnData, ChurnAnalytics, ChurnRiskLevel } from '@/types/churn
 import { ChurnOverview } from '@/components/churn/ChurnOverview';
 import { ChurnRiskDistribution } from '@/components/churn/ChurnRiskDistribution';
 import { CustomerRiskList } from '@/components/churn/CustomerRiskList';
-import { InterventionRecommendations } from '@/components/churn/InterventionRecommendations';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
+
 interface TransactionData {
   'Customer ID': string;
   'Product Name': string;
@@ -29,6 +32,10 @@ interface CustomerData {
 }
 export default function ChurnPrediction() {
   const [selectedRiskLevel, setSelectedRiskLevel] = useState<ChurnRiskLevel | 'All'>('All');
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 90),
+    to: new Date(),
+  });
 
   // Fetch transaction data
   const {
@@ -75,9 +82,16 @@ export default function ChurnPrediction() {
   });
   const filteredCustomers = churnAnalytics?.customersAtRisk.filter(customer => selectedRiskLevel === 'All' || customer.riskLevel === selectedRiskLevel) || [];
   return <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Churn Analysis</h1>
-        <p className="text-muted-foreground">Customer loyalty analysis purchase patterns and customer behavior</p>
+      <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Churn Analysis</h1>
+          <p className="text-muted-foreground">Customer loyalty analysis based on purchase patterns and customer behavior</p>
+        </div>
+        <DateRangePicker
+          date={dateRange}
+          onDateChange={setDateRange}
+          placeholder="Select analysis period"
+        />
       </div>
 
       {/* Analytics Overview */}
@@ -157,9 +171,6 @@ export default function ChurnPrediction() {
               <CustomerRiskList customers={filteredCustomers} isLoading={analyticsLoading} />
             </CardContent>
           </Card>
-
-          {/* Intervention Recommendations */}
-          <InterventionRecommendations analytics={churnAnalytics} isLoading={analyticsLoading} />
         </>}
 
       {(transactionsLoading || customersLoading || analyticsLoading) && <div className="flex items-center justify-center h-64">

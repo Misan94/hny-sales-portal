@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { DateRange } from 'react-day-picker';
+import { subDays } from 'date-fns';
 import { useDemandAnalytics } from '@/hooks/useDemandAnalytics';
 import { DemandVelocity } from '@/components/demand/DemandVelocity';
 import { CategoryPerformance } from '@/components/demand/CategoryPerformance';
@@ -6,8 +9,14 @@ import { PackSizeDemand } from '@/components/demand/PackSizeDemand';
 import { PurchasePatterns } from '@/components/demand/PurchasePatterns';
 import { DemandKPIs } from '@/components/demand/DemandKPIs';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 
 export default function ProductDemandAnalytics() {
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 30),
+    to: new Date(),
+  });
+  
   const { data: demandData, loading, error } = useDemandAnalytics();
 
   if (loading) {
@@ -44,11 +53,18 @@ export default function ProductDemandAnalytics() {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Product Demand Analytics</h1>
-        <p className="text-muted-foreground text-lg">
-          In-depth analysis of product demand patterns for wholesale decision making
-        </p>
+      <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight">Purchase Analysis</h1>
+          <p className="text-muted-foreground text-lg">
+            Customer purchase analysis based on buying patterns
+          </p>
+        </div>
+        <DateRangePicker
+          date={dateRange}
+          onDateChange={setDateRange}
+          placeholder="Select analysis period"
+        />
       </div>
 
       <DemandKPIs data={demandData} />

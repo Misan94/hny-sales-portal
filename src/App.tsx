@@ -16,6 +16,11 @@ import CustomerSegmentation from "./pages/CustomerSegmentation";
 import ProductRecommendations from "./pages/ProductRecommendations";
 import ChurnPrediction from "./pages/ChurnPrediction";
 import ProductDemandAnalytics from "./pages/ProductDemandAnalytics";
+import DemandPulse from "./pages/DemandPulse";
+import SmartReorderCenter from "./pages/SmartReorderCenter";
+import PromotionInsights from "./pages/PromotionInsights";
+import ServiceTracker from "./pages/ServiceTracker";
+import GrowthMaps from "./pages/GrowthMaps";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -87,6 +92,41 @@ const App = () => (
               <ProtectedRoute>
                 <DashboardLayout>
                   <ProductDemandAnalytics />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/demand-pulse" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <DemandPulse />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/smart-reorder" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <SmartReorderCenter />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/promotion-insights" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <PromotionInsights />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/service-tracker" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <ServiceTracker />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/growth-maps" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <GrowthMaps />
                 </DashboardLayout>
               </ProtectedRoute>
             } />

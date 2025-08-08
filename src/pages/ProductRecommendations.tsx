@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { DateRange } from 'react-day-picker';
+import { subDays } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +15,7 @@ import { TransitionHeatmap } from '@/components/recommendations/TransitionHeatma
 import { CategoryFlow } from '@/components/recommendations/CategoryFlow';
 import { ProductPredictions } from '@/components/recommendations/ProductPredictions';
 import { DemographicProductPredictions } from '@/components/recommendations/DemographicProductPredictions';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 
 interface TransactionData {
   'Customer ID': string;
@@ -40,6 +43,10 @@ interface CustomerData {
 export default function ProductRecommendations() {
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 60),
+    to: new Date(),
+  });
   const {
     data: transactions,
     isLoading: transactionsLoading
@@ -104,9 +111,16 @@ export default function ProductRecommendations() {
   });
   const filteredCustomers = customers?.filter(customer => `${customer['First Name']} ${customer['Last Name']}`.toLowerCase().includes(searchTerm.toLowerCase()) || customer['Customer ID'].toLowerCase().includes(searchTerm.toLowerCase())) || [];
   return <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Predictive Analysis</h1>
-        <p className="text-muted-foreground">Predictions based on purchase patterns and customer behavior</p>
+      <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Predictive Analysis</h1>
+          <p className="text-muted-foreground">Predictions based on purchase patterns and customer behavior</p>
+        </div>
+        <DateRangePicker
+          date={dateRange}
+          onDateChange={setDateRange}
+          placeholder="Select analysis period"
+        />
       </div>
 
       {!analyticsLoading && analytics && <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

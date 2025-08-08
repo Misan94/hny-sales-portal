@@ -1,5 +1,5 @@
 
-import { Home, Users, ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Activity, User, LogOut } from "lucide-react"
+import { Home, Users, ShoppingCart, Package, BarChart3, TrendingUp, AlertTriangle, Activity, User, LogOut, Target, Truck, Map } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -27,10 +27,21 @@ const activityNavigation = [
 ]
 
 const insightsNavigation = [
-  { title: "Segments", url: "/segments", icon: BarChart3 },
-  { title: "Predictive Analysis", url: "/predictive-analysis", icon: TrendingUp },
+  { title: "Purchase Analysis", url: "/demand-analytics", icon: Activity },
+  { title: "Demand Pulse", url: "/demand-pulse", icon: TrendingUp },
   { title: "Churn Analysis", url: "/churn-analysis", icon: AlertTriangle },
-  { title: "Demand Analytics", url: "/demand-analytics", icon: Activity },
+  { title: "Segments", url: "/segments", icon: BarChart3 },
+  { title: "Promotion Insights", url: "/promotion-insights", icon: Target },
+]
+
+const forecastsNavigation = [
+  { title: "Predictive Analysis", url: "/predictive-analysis", icon: TrendingUp },
+  { title: "Smart Reorder Center", url: "/smart-reorder", icon: Package },
+]
+
+const planNavigation = [
+  { title: "Service Tracker", url: "/service-tracker", icon: Truck },
+  { title: "Growth Maps", url: "/growth-maps", icon: Map },
 ]
 
 export function AppSidebar() {
@@ -113,6 +124,66 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {insightsNavigation.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink 
+                      to={item.url} 
+                      end
+                      className={({ isActive }) => 
+                        `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors touch-target ${
+                          isActive 
+                            ? "bg-accent text-accent-foreground" 
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                        }`
+                      }
+                    >
+                      <item.icon className="h-5 w-5 flex-shrink-0" />
+                      <span className="truncate">{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+            FORECASTS
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {forecastsNavigation.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink 
+                      to={item.url} 
+                      end
+                      className={({ isActive }) => 
+                        `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors touch-target ${
+                          isActive 
+                            ? "bg-accent text-accent-foreground" 
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                        }`
+                      }
+                    >
+                      <item.icon className="h-5 w-5 flex-shrink-0" />
+                      <span className="truncate">{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+            PLAN
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {planNavigation.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink 
