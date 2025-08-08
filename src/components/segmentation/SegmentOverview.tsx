@@ -8,8 +8,8 @@ export const SegmentOverview = ({
   segments
 }: SegmentOverviewProps) => {
   const totalCustomers = segments.reduce((sum, segment) => sum + segment.count, 0);
-  return <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <Card className="lg:col-span-2">
+  return <div className="w-full">
+      <Card>
         <CardHeader>
           <CardTitle>Segment Distribution</CardTitle>
           <CardDescription>
@@ -31,30 +31,6 @@ export const SegmentOverview = ({
               </PieChart>
             </ResponsiveContainer>
           </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Key Insights</CardTitle>
-          <CardDescription>Top segments and opportunities</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {segments.sort((a, b) => b.count - a.count).slice(0, 3).map(segment => <div key={segment.name} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">{segment.name}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {segment.percentage.toFixed(1)}%
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="h-2 rounded-full" style={{
-              width: `${segment.percentage}%`,
-              backgroundColor: segment.color
-            }} />
-                </div>
-                <p className="text-xs text-muted-foreground">{segment.description}</p>
-              </div>)}
         </CardContent>
       </Card>
     </div>;
