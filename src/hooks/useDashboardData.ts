@@ -68,18 +68,31 @@ export function useDashboardData() {
       }, 0) || 0;
 
       // Get top products by transaction count
+      console.log('Total transactions for product analysis:', transactions?.length || 0);
+      
       const productCounts = transactions?.reduce((acc, t) => {
         const productName = t['Product Name'];
-        if (productName) {
-          acc[productName] = (acc[productName] || 0) + 1;
+        // Improved filtering: handle null, undefined, empty strings, and whitespace
+        if (productName && typeof productName === 'string' && productName.trim().length > 0) {
+          const cleanName = productName.trim();
+          acc[cleanName] = (acc[cleanName] || 0) + 1;
         }
         return acc;
       }, {} as Record<string, number>) || {};
 
+      console.log('Product counts object:', productCounts);
+      console.log('Number of unique products found:', Object.keys(productCounts).length);
+      
+      // Sample some product names to verify data quality
+      const sampleProducts = Object.keys(productCounts).slice(0, 10);
+      console.log('Sample product names:', sampleProducts);
+
       const topProducts = Object.entries(productCounts)
         .sort(([,a], [,b]) => b - a)
-        .slice(0, 5)
+        .slice(0, 8) // Increased from 5 to 8 to show more products
         .map(([name, count]) => ({ name, count }));
+        
+      console.log('Top products result:', topProducts);
 
       // Get category distribution
       const categoryCounts = transactions?.reduce((acc, t) => {
