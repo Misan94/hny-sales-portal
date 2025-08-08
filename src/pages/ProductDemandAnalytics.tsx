@@ -1,7 +1,6 @@
 import { useDemandAnalytics } from '@/hooks/useDemandAnalytics';
 import { DemandVelocity } from '@/components/demand/DemandVelocity';
 import { CategoryPerformance } from '@/components/demand/CategoryPerformance';
-import { BrandPerformance } from '@/components/demand/BrandPerformance';
 import { GeographicDemand } from '@/components/demand/GeographicDemand';
 import { PackSizeDemand } from '@/components/demand/PackSizeDemand';
 import { PurchasePatterns } from '@/components/demand/PurchasePatterns';
@@ -54,19 +53,16 @@ export default function ProductDemandAnalytics() {
 
       <DemandKPIs data={demandData} />
 
+      <PurchasePatterns data={demandData.purchasePatterns} />
+
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
         <DemandVelocity data={demandData.demandVelocity} />
         <CategoryPerformance data={demandData.categoryPerformance} />
       </div>
 
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-        <BrandPerformance data={demandData.brandPerformance} />
         <GeographicDemand data={demandData.geographicDemand} />
-      </div>
-
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
         <PackSizeDemand data={demandData.packSizeAnalysis} />
-        <PurchasePatterns data={demandData.purchasePatterns} />
       </div>
     </div>
   );
