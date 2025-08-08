@@ -15,6 +15,7 @@ import Products from "./pages/Products";
 import CustomerSegmentation from "./pages/CustomerSegmentation";
 import ProductRecommendations from "./pages/ProductRecommendations";
 import ChurnPrediction from "./pages/ChurnPrediction";
+import ProductDemandAnalytics from "./pages/ProductDemandAnalytics";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -79,6 +80,13 @@ const App = () => (
               <ProtectedRoute>
                 <DashboardLayout>
                   <ChurnPrediction />
+                </DashboardLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/demand-analytics" element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <ProductDemandAnalytics />
                 </DashboardLayout>
               </ProtectedRoute>
             } />
