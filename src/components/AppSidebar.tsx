@@ -47,13 +47,6 @@ export function AppSidebar() {
   return (
     <Sidebar className="border-r bg-gradient-to-b from-white to-gray-50/80" collapsible="icon">
       <SidebarHeader className="p-4">
-        <div className="flex items-center justify-start">
-          <img 
-            src="/lovable-uploads/5fe48766-1f60-46ec-a1d8-be94fe7894b2.png" 
-            alt="Honeywell Logo" 
-            className="h-8 w-auto"
-          />
-        </div>
       </SidebarHeader>
 
       <SidebarContent className="pt-4 md:pt-8 h-full overflow-y-auto">
